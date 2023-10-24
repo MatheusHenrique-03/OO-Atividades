@@ -1,0 +1,253 @@
+1 - from Veiculo import Veiculo
+
+class Carro(Veiculo):
+    def _init_(self, modelo, ano, cambio):
+        super()._init_(tipo = "Carro", velocidade=200)
+        self._modelo = modelo
+        self._ano = ano
+        self._cambio = cambio
+
+    def andar(self):
+        print (f"{self._tipo} {self._modelo} ano {self._ano} anda a {self._velocidade} km/h")
+
+    def trocarMarcha(self):
+        print (f'{self._tipo} {self._modelo} troca marcha de modo {self._cambio}')
+
+    def descricao(self):
+        print (f'{self._tipo}, {self._modelo}, {self._ano}, {self._cambio}, muito elegante')
+
+2 - from abc import ABC, abstractmethod
+import math
+
+class Forma(ABC):
+    @abstractmethod
+    def calcular_area(self):
+        pass
+
+class Retangulo(Forma):
+    def _init_(self, comprimento, largura):
+        self.comprimento = comprimento
+        self.largura = largura
+
+    def calcular_area(self):
+        return self.comprimento * self.largura
+
+class Circulo(Forma):
+    def _init_(self, raio):
+        self.raio = raio
+
+    def calcular_area(self):
+        return math.pi * self.raio ** 2
+
+3 - from Veiculo import Veiculo
+
+class Moto(Veiculo):
+    def _init_(self, modelo, ano, cambio):
+        super()._init_(tipo = "Moto", velocidade=200)
+        self._modelo = modelo
+        self._ano = ano
+        self._cambio = cambio
+
+    def andar(self):
+        print (f"{self._tipo} {self._modelo} ano {self._ano} anda a {self._velocidade} km/h")
+
+    def trocarMarcha(self):
+        print (f'{self._tipo} {self._modelo} troca marcha de modo {self._cambio}')
+
+    def descricao(self): #é o mesmo que o 8
+        print (f'{self._tipo}, {self._modelo}, {self._ano}, {self._cambio} muito veloz')
+
+4 - class Veiculo():
+    def _init_(self, tipo, velocidade):
+        self._tipo = tipo
+        self._velocidade = velocidade
+
+    def especificar (self):
+        print (f'é um {self._tipo} e anda a aproximadamente a {self._velocidade}')
+
+    def acelerar(self, aumento):
+        self._velocidade += aumento
+
+5 - from Veiculo import Veiculo
+from Carro import Carro
+from Moto import Moto
+
+def acelerar(veiculo, aumento):
+    veiculo.acelerar(aumento)
+
+carro1 = Carro ("Corsa", 82, "automatico")
+moto1 = Moto ("CG", 2012, "manual")
+
+carro1.andar()
+carro1.trocarMarcha()
+moto1.andar()
+moto1.trocarMarcha()
+
+carro1.descricao()
+moto1.descricao()
+
+acelerar(carro1, 20)
+carro1.andar()
+
+acelerar(moto1, 50)
+moto1.andar()
+
+6 - import random
+from Personagem import Personagem
+
+class Guerreiro(Personagem):
+    def _init_(self, nome):
+        super()._init_(nome, pv =100, pa=15)
+
+    def usarSkill(self, inimigo):
+        dano = random.randint(5,10)
+        print(f'{self.nome} usa habilidade especial e causa {dano} de dano')
+        inimigo.perderVida(dano)
+
+class Mago(Personagem):
+    def _init_(self, nome):
+        super()._init_(nome, pv =80, pa=20)
+
+    def usarSkill(self, inimigo):
+        dano = random.randint(10,20)
+        print(f'{self.nome} usa habilidade especial e causa {dano} de dano')
+        inimigo.perderVida(dano)
+
+class Arqueiro(Personagem):
+    def _init_(self, nome):
+        super()._init_(nome, pv =90, pa=18)
+
+    def usarSkill(self, inimigo):
+        chance = random.random()
+        if chance > 0.3:
+            print(f'{self.nome} dale tiro veio')
+            inimigo.perderVida(2 * self.pa)
+        else:
+            print(f'{self.nome} Erroooouuu')
+
+7 - import random
+
+#pv= pontos de vida, pa= pontos de ataque, pd= pontos de dano
+class Personagem:
+    def _init_(self, nome, pv, pa):
+        self.nome= nome
+        self. __pv = pv
+        self.pa = pa
+
+    def atacar (self, inimigo):
+        print(f'{self.nome} ataca')
+        inimigo.perderVida(self.pa)
+
+    def perderVida(self, pd):
+        self.__pv -= pd
+        if self.__pv <= 0:
+            self.__pv = 0
+
+    def estaVivo(self):
+        return self.__pv >0
+
+    def mostrarStatus(self):
+        print(f'{self.nome}: PV - {self.__pv}, PA - {self.pa}')
+
+ 8 - from Personagem import Personagem
+from Classes import Guerreiro, Mago, Arqueiro
+
+def combate(personagem1, personagem2):
+    print('--------------')
+    personagem1.mostrarStatus()
+    personagem2.mostrarStatus()
+    print('--------------')
+    while personagem1.estaVivo() and personagem2.estaVivo():
+        personagem1.atacar(personagem2)
+        personagem2.mostrarStatus()
+        personagem2.atacar(personagem1)
+        personagem1.mostrarStatus()
+        print('--------------')
+        personagem1.usarSkill(personagem2)
+        personagem2.mostrarStatus()
+        personagem2.usarSkill(personagem1)
+        personagem1.mostrarStatus()
+        print('--------------')
+
+
+guerreiro = Guerreiro('Rogerio Ceni')
+mago = Mago ('Donald Tramp')
+arqueiro = Arqueiro('Faustao')
+
+combate(guerreiro, arqueiro)
+print('\n --- proximo combate --- \n')
+
+
+9 - class ContaBancaria:
+    def _init_(self, titular, saldo = 0):
+        self._titular = titular
+        self._saldo = saldo
+
+    def depositar(self, valor):
+        if valor > 0:
+            self._saldo += valor
+            print (f'deposito de R${valor} realizado com sucesso')
+
+        else:
+            print ('valor invalido')
+
+    def sacar(self, valor):
+        if 0 < valor <= self.saldo:
+            self._saldo -= valor
+            print(f'saque de R$ {valor} realizado com sucesso')
+
+        else:
+            print ('saque invalido')
+
+    def transferir(self, destino, valor):
+        if self._saldo >= valor > 0:
+            self._saldo -= valor
+            destino.depositar(valor)
+            print (f'transferencia de R${valor} para {destino.titular} realizado com sucesso')
+
+        else:
+            print('transferencia negada')
+
+    def extrato(self):
+        print(f'titular: {self._titular}')
+        print(f'saldo: R${self._saldo}')
+
+
+10 - from ContaBancaria import ContaBancaria
+
+
+class ContaCorrente(ContaBancaria):
+    def _init_(self, titular, saldo=0, limite = 1000):
+        super()._init_(titular, saldo)
+        self._limite = limite
+
+    def sacar(self, valor):
+        if 0 < valor <= self._saldo + self._limite:
+            self._saldo -= valor
+            print (f'saque de R${valor} realizado com sucesso. ')
+        else:
+            print(f'saque invalido')
+
+
+class ContaPoupanca(ContaBancaria):
+    def _init_(self, titular, saldo=0, taxa=0.03):
+        super()._init_(titular, saldo)
+        self._taxa = taxa
+
+    def aplicarJuros(self):
+        juros = self._saldo * self._taxa
+        self._saldo += juros
+        print (f'juros de R${juros} aplicado com sucesso.')
+
+from ContaBancaria import ContaBancaria
+from ContasTipo import ContaCorrente, ContaPoupanca
+
+conta1 = ContaCorrente('Jorge',1000, 2000) 
+conta2 = ContaPoupanca ('Purcina', 5000, 0.05)
+
+conta1.extrato()
+conta1.sacar(1500)
+conta1.extrato()
+conta1.transferir(conta2, 500)
+conta2.aplicarJuros()
+conta2.extrato()
